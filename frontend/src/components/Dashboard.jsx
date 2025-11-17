@@ -32,6 +32,8 @@ const Dashboard = () => {
       approved: 'status-approved',
       rejected: 'status-rejected',
       needs_info: 'status-needs_info',
+      review_required: 'status-needs_info',
+      escalated: 'status-rejected',
     };
     return statusMap[status] || 'status-submitted';
   };

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Bot } from 'lucide-react';
 import ChatInterface from './components/ChatInterface';
 import Dashboard from './components/Dashboard';
+import ReviewDashboard from './components/ReviewDashboard';
 
 function App() {
   const [activeTab, setActiveTab] = useState('chat');
@@ -34,6 +35,12 @@ function App() {
           >
             📊 Claims Dashboard
           </button>
+          <button
+            className={`tab-button ${activeTab === 'review' ? 'active' : ''}`}
+            onClick={() => setActiveTab('review')}
+          >
+            🔍 Review Queue
+          </button>
         </div>
 
         {activeTab === 'chat' && (
@@ -41,6 +48,8 @@ function App() {
         )}
 
         {activeTab === 'dashboard' && <Dashboard />}
+
+        {activeTab === 'review' && <ReviewDashboard />}
       </div>
     </div>
   );
