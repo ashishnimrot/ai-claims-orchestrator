@@ -14,6 +14,8 @@ from models.schemas import (
 )
 from orchestrator import ClaimsOrchestrator
 from utils.file_storage import file_storage
+from pydantic import BaseModel
+from agents.adjuster_brief_agent import generate_adjuster_brief
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -24,6 +26,13 @@ app = FastAPI(
 
 # Get settings
 settings = get_settings()
+
+# Add this inside your end-to-end claim analyzer:
+def finalize_claim_output(claim_structured):
+    # Your decision engine has already produced structured JSON
+    adjuster_brief = generate_adjuster_brief(claim_structured)
+    claim_structured["adjuster_brief"] = adjuster_brief
+    return claim_structured
 
 # Configure CORS - Handle origins properly
 def get_cors_origins():
@@ -108,6 +117,15 @@ async def health_check():
             "agents": "ready"
         }
     }
+
+
+class ClaimData(BaseModel):
+    claim_json: dict
+
+@app.post("/generate-adjuster-brief")
+def generate_brief(data: ClaimData):
+    brief = generate_adjuster_brief(data.claim_json)
+    return {"adjuster_brief": brief}
 
 
 @app.post("/api/claims/submit", response_model=ClaimResponse)

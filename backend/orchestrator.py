@@ -42,14 +42,18 @@ class ClaimsOrchestrator:
         # Initialize Qdrant client - Docker-aware
         try:
             self.qdrant_client = QdrantClient(
-                host=self.settings.qdrant_host,
-                port=self.settings.qdrant_port
+                # host=self.settings.qdrant_host,
+                # port=self.settings.qdrant_port
+                 url=self.settings.qdrant_host,
+                 api_key=self.settings.qdrant_api_key,
             )
             print(f"✅ Connected to Qdrant at {self.settings.qdrant_host}:{self.settings.qdrant_port}")
         except Exception as e:
             print(f"⚠️  Could not connect to Qdrant: {e}")
-            print(f"   Using host: {self.settings.qdrant_host}:{self.settings.qdrant_port}")
+            print(f"Using host: {self.settings.qdrant_host}:{self.settings.qdrant_port}")
             self.qdrant_client = None
+            
+        
         
         # Initialize all AI agents
         self.validator = ClaimValidatorAgent(self.llm)

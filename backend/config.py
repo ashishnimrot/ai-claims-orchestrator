@@ -10,11 +10,12 @@ class Settings(BaseSettings):
     gemini_embedding_model: str = "models/embedding-001"
     
     # Qdrant Configuration - Docker-aware
-    qdrant_host: str = os.getenv("QDRANT_HOST", "localhost")
+    qdrant_host: str = os.getenv("QDRANT_URL")
+    qdrant_api_key: str = os.getenv("QDRANT_API_KEY", "")
     qdrant_port: int = 6333
-    qdrant_collection: str = "insurance_claims"
+    qdrant_collection: str = os.getenv("QDRANT_COLLECTION", "insurance_claims")
     embedding_dimension: int = 768
-    
+
     # Backend Configuration
     backend_host: str = "0.0.0.0"
     backend_port: int = 8000
